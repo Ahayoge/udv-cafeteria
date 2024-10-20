@@ -1,84 +1,90 @@
+:root {
+    --graphite: #0b2027;
+    --mint: #00c08b;
+    --violet: #712181;
+    --white: #f8f9fa;
+    --yellow: #d8f69a;
+    --light-vio: #dccfec;
+    --dark-blue: #003b4c;
+}
+
+.flex {
+    display: flex;
+}
+
+.container {
+    width: 1440px;
+}
+
 @font-face {
-    font-family: "Hero";
-    src:
-        local("Hero Light"),
-        local("Hero-Light"),
-        url("./fonts/Herolight.woff2") format("woff2"),
-        url("./fonts/Herolight.woff") format("woff");
+    font-family: 'Hero';
+    src: local('Hero Light'), local('Hero-Light'),
+        url('./fonts/Herolight.woff2') format('woff2'),
+        url('./fonts/Herolight.woff') format('woff');
     font-weight: 200;
     font-style: normal;
 }
 @font-face {
-    font-family: "Hero";
-    src:
-        local("Hero Regular"),
-        local("Hero-Regular"),
-        url("./fonts/Heroregular.woff2") format("woff2"),
-        url("./fonts/Heroregular.woff") format("woff");
+    font-family: 'Hero';
+    src: local('Hero Regular'), local('Hero-Regular'),
+        url('./fonts/Heroregular.woff2') format('woff2'),
+        url('./fonts/Heroregular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
-    font-family: "Hero";
-    src:
-        local("Hero Bold"),
-        local("Hero-Bold"),
-        url("./fonts/Herobold.woff2") format("woff2"),
-        url("./fonts/Herobold.woff") format("woff");
+    font-family: 'Hero';
+    src: local('Hero Bold'), local('Hero-Bold'),
+        url('./fonts/Herobold.woff2') format('woff2'),
+        url('./fonts/Herobold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
-    font-family: "Golos Text";
-    src:
-        local("Golos Text Medium"),
-        local("GolosText-Medium"),
-        url("./fonts/GolosText-Medium.woff2") format("woff2"),
-        url("./fonts/GolosText-Medium.woff") format("woff");
+    font-family: 'Golos Text';
+    src: local('Golos Text Medium'), local('GolosText-Medium'),
+        url('./fonts/GolosText-Medium.woff2') format('woff2'),
+        url('./fonts/GolosText-Medium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Golos Text";
-    src:
-        local("Golos Text Black"),
-        local("GolosText-Black"),
-        url("./fonts/GolosText-Black.woff2") format("woff2"),
-        url("./fonts/GolosText-Black.woff") format("woff");
+    font-family: 'Golos Text';
+    src: local('Golos Text Black'), local('GolosText-Black'),
+        url('./fonts/GolosText-Black.woff2') format('woff2'),
+        url('./fonts/GolosText-Black.woff') format('woff');
     font-weight: 900;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Golos Text";
-    src:
-        local("Golos Text DemiBold"),
-        local("GolosText-DemiBold"),
-        url("./fonts/GolosText-DemiBold.woff2") format("woff2"),
-        url("./fonts/GolosText-DemiBold.woff") format("woff");
+    font-family: 'Golos Text';
+    src: local('Golos Text DemiBold'), local('GolosText-DemiBold'),
+        url('./fonts/GolosText-DemiBold.woff2') format('woff2'),
+        url('./fonts/GolosText-DemiBold.woff') format('woff');
     font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Golos Text";
-    src:
-        local("Golos Text Bold"),
-        local("GolosText-Bold"),
-        url("./fonts/GolosText-Bold.woff2") format("woff2"),
-        url("./fonts/GolosText-Bold.woff") format("woff");
+    font-family: 'Golos Text';
+    src: local('Golos Text Bold'), local('GolosText-Bold'),
+        url('./fonts/GolosText-Bold.woff2') format('woff2'),
+        url('./fonts/GolosText-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Golos Text";
-    src:
-        local("Golos Text Regular"),
-        local("GolosText-Regular"),
-        url("./fonts/GolosText-Regular.woff2") format("woff2"),
-        url("./fonts/GolosText-Regular.woff") format("woff");
+    font-family: 'Golos Text';
+    src: local('Golos Text Regular'), local('GolosText-Regular'),
+        url('./fonts/GolosText-Regular.woff2') format('woff2'),
+        url('./fonts/GolosText-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+}
+
+html {
+    font-family: 'Golos Text';
 }
