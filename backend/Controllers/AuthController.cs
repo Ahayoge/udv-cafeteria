@@ -18,7 +18,7 @@ namespace UDV_Benefits.Controllers
             _authService = authService;
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
             var user = registerRequest.FromDto();
@@ -33,13 +33,13 @@ namespace UDV_Benefits.Controllers
             return BadRequest(new { error = result.Error!.Description });
         }
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
             var result = await _authService.LoginAsync(loginRequest.Email, loginRequest.Password);
             if (result.IsSuccess)
                 return Ok(new { accessToken = result.Value });
             return BadRequest(new { error = result.Error!.Description });
-        } 
+        }
     }
 }

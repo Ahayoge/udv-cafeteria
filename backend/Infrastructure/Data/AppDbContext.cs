@@ -7,6 +7,7 @@ namespace UDV_Benefits.Infrastructure.Data
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
