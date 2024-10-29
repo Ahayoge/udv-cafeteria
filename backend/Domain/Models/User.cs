@@ -7,6 +7,6 @@
         public string PasswordHash { get; set; }
 
         public ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
-        public Worker Worker { get; set; }
+        public Employee Employee { get; set; }
     }
 }

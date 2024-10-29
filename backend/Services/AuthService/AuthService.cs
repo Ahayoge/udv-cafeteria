@@ -1,24 +1,23 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using UDV_Benefits.Domain.Interfaces;
-using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Domain.Errors;
+using UDV_Benefits.Domain.Interfaces.AuthService;
+using UDV_Benefits.Domain.Interfaces.EmployeeService;
+using UDV_Benefits.Domain.Interfaces.UserService;
+using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Utilities;
-using UDV_Benefits.Infrastructure.Data;
 
-namespace UDV_Benefits.Services.Auth
+namespace UDV_Benefits.Services.AuthService
 {
     public class AuthService : IAuthService
     {
-        private readonly AppDbContext _dbContext;
         private readonly IUserService _userService;
-        public readonly IWorkerService _workerService;
+        public readonly IEmployeeService _employeeService;
 
-        public AuthService(IUserService userService, IWorkerService workerService, AppDbContext dbContext)
+        public AuthService(IUserService userService, IEmployeeService employeeService)
         {
             _userService = userService;
-            _workerService = workerService;
-            _dbContext = dbContext;
+            _employeeService = employeeService;
         }
 
         public async Task<ValueResult<string>> LoginAsync(string email, string password)
@@ -34,28 +33,7 @@ namespace UDV_Benefits.Services.Auth
             return accessToken;
         }
 
-        public async Task<ValueResult<string>> RegisterAsync(User user, string password)
-        {
-            user.PasswordHash = PasswordHasher.ComputeHash(password);
-            var userResult = await _userService.AddUserAsync(user);
-            if (userResult.IsFailure)
-            {
-                return userResult.Error;
-            }
-
-            var worker = user.Worker;
-            var workerResult = await _workerService.AddWorkerAsync(worker);
-            if (workerResult.IsFailure)
-            {
-                return workerResult.Error;
-            }
-
-            await _dbContext.SaveChangesAsync();
-            var accessToken = await CreateAccessToken(user);
-            return accessToken;
-        }
-
-        private async Task<String> CreateAccessToken(User user)
+        public async Task<string> CreateAccessToken(User user)
         {
             var userRoles = await _userService.GetRolesAsync(user);
             var claims = new List<Claim>

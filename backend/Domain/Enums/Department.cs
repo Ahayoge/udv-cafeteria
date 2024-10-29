@@ -2,7 +2,7 @@
 {
     public enum Department
     {
-        Development,
-        Testing
+        Development = 1,
+        Testing = 2
     }
 }

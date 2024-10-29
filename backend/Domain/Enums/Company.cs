@@ -2,7 +2,7 @@
 {
     public enum Company
     {
-        Udv,
-        FtSoft
+        Udv = 1,
+        FtSoft = 2
     }
 }

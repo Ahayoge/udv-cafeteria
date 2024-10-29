@@ -1,8 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using UDV_Benefits.Domain.Interfaces;
+using UDV_Benefits.Domain.Interfaces.AuthService;
+using UDV_Benefits.Domain.Interfaces.EmployeeService;
+using UDV_Benefits.Domain.Interfaces.RegisterService;
+using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Infrastructure.Data;
-using UDV_Benefits.Services;
-using UDV_Benefits.Services.Auth;
+using UDV_Benefits.Services.AuthService;
+using UDV_Benefits.Services.EmployeeService;
+using UDV_Benefits.Services.RegisterService;
+using UDV_Benefits.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +20,9 @@ builder.Services.AddSwaggerGen();
 
 //Сервисы
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IWorkerService, WorkerService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 #if RELEASE
 builder.Services.AddDbContext<AppDbContext>(

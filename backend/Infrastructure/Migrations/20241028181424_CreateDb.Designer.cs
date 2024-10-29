@@ -12,8 +12,8 @@ using UDV_Benefits.Infrastructure.Data;
 namespace UDV_Benefits.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241021153950_MakeDepartmentCompanyEnum")]
-    partial class MakeDepartmentCompanyEnum
+    [Migration("20241028181424_CreateDb")]
+    partial class CreateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,46 +25,7 @@ namespace UDV_Benefits.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("UDV_Benefits.Domain.Models.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("UDV_Benefits.Domain.Models.UserRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersRoles");
-                });
-
-            modelBuilder.Entity("UDV_Benefits.Domain.Models.Worker", b =>
+            modelBuilder.Entity("UDV_Benefits.Domain.Models.Employee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +79,57 @@ namespace UDV_Benefits.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Workers");
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("UDV_Benefits.Domain.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("UDV_Benefits.Domain.Models.UserRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersRoles");
+                });
+
+            modelBuilder.Entity("UDV_Benefits.Domain.Models.Employee", b =>
+                {
+                    b.HasOne("UDV_Benefits.Domain.Models.User", "User")
+                        .WithOne("Employee")
+                        .HasForeignKey("UDV_Benefits.Domain.Models.Employee", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UDV_Benefits.Domain.Models.UserRole", b =>
@@ -132,23 +143,12 @@ namespace UDV_Benefits.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UDV_Benefits.Domain.Models.Worker", b =>
-                {
-                    b.HasOne("UDV_Benefits.Domain.Models.User", "User")
-                        .WithOne("Worker")
-                        .HasForeignKey("UDV_Benefits.Domain.Models.Worker", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("UDV_Benefits.Domain.Models.User", b =>
                 {
-                    b.Navigation("UsersRoles");
-
-                    b.Navigation("Worker")
+                    b.Navigation("Employee")
                         .IsRequired();
+
+                    b.Navigation("UsersRoles");
                 });
 #pragma warning restore 612, 618
         }

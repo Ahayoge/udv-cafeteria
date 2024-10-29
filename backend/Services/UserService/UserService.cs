@@ -1,20 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Domain.Errors;
-using UDV_Benefits.Domain.Interfaces;
+using UDV_Benefits.Domain.Interfaces.EmployeeService;
+using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Utilities;
 
-namespace UDV_Benefits.Services.Auth
+namespace UDV_Benefits.Services.UserService
 {
     public class UserService : IUserService
     {
         private readonly AppDbContext _dbContext;
+        private readonly IEmployeeService _employeeService;
 
-        public UserService(AppDbContext dbContext)
+        public UserService(AppDbContext dbContext, IEmployeeService employeeService)
         {
             _dbContext = dbContext;
+            _employeeService = employeeService;
         }
 
         public async Task<Result> AddUserAsync(User user)
@@ -25,7 +28,15 @@ namespace UDV_Benefits.Services.Auth
                 return UserErrors.UserExists;
             }
 
+            var employee = user.Employee;
+            var existingEmployee = await _employeeService.EmployeeExistsAsync(employee);
+            if (existingEmployee)
+            {
+                return UserErrors.UserExists;
+            }
+
             await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
             return Result.Success();
         }
 

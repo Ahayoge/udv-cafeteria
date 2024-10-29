@@ -7,7 +7,7 @@ namespace UDV_Benefits.Infrastructure.Data
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,19 +19,19 @@ namespace UDV_Benefits.Infrastructure.Data
                 .Property(ur => ur.Role)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<Worker>()
+            modelBuilder.Entity<Employee>()
                 .Property(w => w.Position)
                 .HasConversion<string>();
-            modelBuilder.Entity<Worker>()
+            modelBuilder.Entity<Employee>()
                 .Property(w => w.Department)
                 .HasConversion<string>();
-            modelBuilder.Entity<Worker>()
+            modelBuilder.Entity<Employee>()
                 .Property(w => w.Company)
                 .HasConversion<string>();
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
-        public DbSet<Worker> Workers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

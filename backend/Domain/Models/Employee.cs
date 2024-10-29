@@ -2,7 +2,7 @@
 
 namespace UDV_Benefits.Domain.Models
 {
-    public class Worker
+    public class Employee
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
