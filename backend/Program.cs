@@ -5,6 +5,7 @@ using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.RegisterService;
 using UDV_Benefits.Domain.Interfaces.UserService;
+using UDV_Benefits.Extensions;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Services.AuthService;
 using UDV_Benefits.Services.BenefitService;
@@ -57,6 +58,9 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.ConfigureAuthentication();
+builder.Services.ConfigureAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,7 +71,8 @@ app.Urls.Add("http://0.0.0.0:7178");
 
 //app.UseHttpsRedirection();
 app.UseCors(myAllowSpecificOrigins);
-//TODO: добавить авторизацию на jwt токенах
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

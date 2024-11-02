@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Mapper;
+using UDV_Benefits.Utilities;
 
 namespace UDV_Benefits.Controllers
 {
@@ -17,6 +19,7 @@ namespace UDV_Benefits.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.Authenticated)]
         public async Task<IActionResult> GetAllBenefits()
         {
             var benefits = await _benefitService.GetAllBenefitsAsync();
