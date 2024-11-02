@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using UDV_Benefits.Domain.Interfaces.AuthService;
+using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.RegisterService;
 using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Services.AuthService;
+using UDV_Benefits.Services.BenefitService;
 using UDV_Benefits.Services.EmployeeService;
 using UDV_Benefits.Services.RegisterService;
 using UDV_Benefits.Services.UserService;
@@ -13,7 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options
+        .JsonSerializerOptions
+        .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,6 +32,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IBenefitService, BenefitService>();
 
 #if RELEASE
 builder.Services.AddDbContext<AppDbContext>(

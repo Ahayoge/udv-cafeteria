@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UDV_Benefits.Infrastructure.Data;
@@ -11,9 +12,11 @@ using UDV_Benefits.Infrastructure.Data;
 namespace UDV_Benefits.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241101163019_CreateBenefitsAndCategories")]
+    partial class CreateBenefitsAndCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +44,6 @@ namespace UDV_Benefits.Infrastructure.Migrations
 
                     b.Property<int?>("ExperienceYearsRequired")
                         .HasColumnType("integer");
-
-                    b.Property<string>("FormUrl")
-                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()

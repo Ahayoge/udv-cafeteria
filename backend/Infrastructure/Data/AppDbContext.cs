@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UDV_Benefits.Domain.Models;
+using UDV_Benefits.Domain.ValueObject;
 
 namespace UDV_Benefits.Infrastructure.Data
 {
@@ -33,5 +35,7 @@ namespace UDV_Benefits.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Benefit> Benefits { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }
