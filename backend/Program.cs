@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using UDV_Benefits.Domain.Interfaces.AuthService;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
+using UDV_Benefits.Domain.Interfaces.CategoryService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.RegisterService;
 using UDV_Benefits.Domain.Interfaces.UserService;
@@ -9,6 +10,7 @@ using UDV_Benefits.Extensions;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Services.AuthService;
 using UDV_Benefits.Services.BenefitService;
+using UDV_Benefits.Services.CategoryService;
 using UDV_Benefits.Services.EmployeeService;
 using UDV_Benefits.Services.RegisterService;
 using UDV_Benefits.Services.UserService;
@@ -34,6 +36,7 @@ builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IBenefitService, BenefitService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 #if RELEASE
 builder.Services.AddDbContext<AppDbContext>(

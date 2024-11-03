@@ -1,11 +1,12 @@
-﻿using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
+﻿using UDV_Benefits.Domain.DTO.Benefit.AddBenefit;
+using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
 using UDV_Benefits.Domain.Models;
 
-namespace UDV_Benefits.Domain.Mapper
+namespace UDV_Benefits.Domain.Mapper.BenefitMapper
 {
-    public static class BenefitMapper
+    public static class AllBenefitMapper
     {
-        public static BenefitDto ToDto(this Benefit benefit)
+        public static BenefitDto ToDto<T>(this Benefit benefit) where T: BenefitDto
         {
             return new BenefitDto
             {
