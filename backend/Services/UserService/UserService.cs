@@ -57,6 +57,18 @@ namespace UDV_Benefits.Services.UserService
             return ValueResult<User>.Success(user);
         }
 
+        public async Task<ValueResult<User>> FindByIdAsync(Guid id)
+        {
+            var user = await _dbContext.Users
+                .Include(u => u.Employee)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return UserErrors.UserNotFoundById;
+            }
+            return user;
+        }
+
         public async Task<List<Role>> GetRolesAsync(User user)
         {
             var userWithRoles = await _dbContext.Users

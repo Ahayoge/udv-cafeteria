@@ -1,4 +1,5 @@
-﻿using UDV_Benefits.Domain.Models;
+﻿using UDV_Benefits.Domain.Errors;
+using UDV_Benefits.Domain.Models;
 
 namespace UDV_Benefits.Domain.Interfaces.EmployeeService
 {

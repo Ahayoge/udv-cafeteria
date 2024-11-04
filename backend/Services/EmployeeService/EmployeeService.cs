@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UDV_Benefits.Domain.Errors;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Infrastructure.Data;

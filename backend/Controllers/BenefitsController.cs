@@ -5,6 +5,8 @@ using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
 using UDV_Benefits.Domain.DTO.Benefit.Worker.GetBenefitById;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.CategoryService;
+using UDV_Benefits.Domain.Interfaces.EmployeeService;
+using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Domain.Mapper.BenefitMapper;
 using UDV_Benefits.Utilities;
 
@@ -16,11 +18,13 @@ namespace UDV_Benefits.Controllers
     {
         private readonly IBenefitService _benefitService;
         private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
 
-        public BenefitsController(IBenefitService benefitService, ICategoryService categoryService)
+        public BenefitsController(IBenefitService benefitService, ICategoryService categoryService, IUserService userService)
         {
             _benefitService = benefitService;
             _categoryService = categoryService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -67,6 +71,31 @@ namespace UDV_Benefits.Controllers
 
             var benefitDto = benefitResult.Value.ToDto<GetBenefitByIdResponse>();
             return Ok(benefitDto);
+        }
+
+        [HttpPost("{benefitId:guid}/apply")]
+        [Authorize(Policy = Policy.Worker)]
+        public async Task<IActionResult> ApplyForBenefit(Guid benefitId)
+        {
+            var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value);
+            var userResult = await _userService.FindByIdAsync(userId);
+            if (userResult.IsFailure)
+            {
+                return NotFound(new { error = userResult.Error!.Description });
+            }
+            var benefitResult = await _benefitService.GetBenefitByIdWorkerAsync(benefitId);
+            if (benefitResult.IsFailure)
+            {
+                return NotFound(new { error = benefitResult.Error!.Description });
+            }
+            var employee = userResult.Value.Employee;
+            var benefit = benefitResult.Value;
+            var benefitRequestResult = await _benefitService.ApplyForBenefitAsync(employee, benefit);
+            if (benefitRequestResult.IsFailure)
+            {
+                return BadRequest(new { error = benefitRequestResult.Error!.Description });
+            }
+            return Ok();
         }
     }
 }

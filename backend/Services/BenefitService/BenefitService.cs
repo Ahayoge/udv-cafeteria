@@ -3,17 +3,21 @@ using UDV_Benefits.Domain.Errors;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.CategoryService;
 using UDV_Benefits.Domain.Models;
+using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Infrastructure.Data;
+using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 
 namespace UDV_Benefits.Services.BenefitService
 {
     public class BenefitService : IBenefitService
     {
         private readonly AppDbContext _dbContext;
+        private readonly IBenefitRequestService _benefitRequestService;
 
-        public BenefitService(AppDbContext dbContext)
+        public BenefitService(AppDbContext dbContext, IBenefitRequestService benefitRequestService)
         {
             _dbContext = dbContext;
+            _benefitRequestService = benefitRequestService;
         }
 
         public async Task<ValueResult<Benefit>> AddBenefitAsync(Benefit benefit)
@@ -27,6 +31,53 @@ namespace UDV_Benefits.Services.BenefitService
             await _dbContext.AddAsync(benefit);
             await _dbContext.SaveChangesAsync();
             return benefit;
+        }
+
+        public async Task<Result> ApplyForBenefitAsync(Employee employee, Benefit benefit)
+        {
+            if (benefit.ExperienceYearsRequired != null)
+            {
+                if (benefit.ExperienceYearsRequired !=
+                DateOnly.FromDateTime(DateTime.Today).Year - employee.StartedWorkWhen.Year)
+                {
+                    return BenefitRequestErrors.BenefitRequestNoAccessExperience;
+                }
+            }
+            if (benefit.OnboardingRequired)
+            {
+                if (!employee.IsOnboarded)
+                {
+                    return BenefitRequestErrors.BenefitRequestNoAccessOnboarding;
+                }
+            }
+            if (benefit.UcoinPrice != null)
+            {
+                if (employee.Ucoins < benefit.UcoinPrice)
+                {
+                    return BenefitRequestErrors.BenefitRequestNoAccessUcoins;
+                }
+
+                employee.Ucoins = benefit.UcoinPrice != null
+                ? employee.Ucoins - (int)benefit.UcoinPrice
+                : employee.Ucoins;
+            }
+
+            var benefitRequest = new BenefitRequest
+            {
+                AppliedWhen = DateOnly.FromDateTime(DateTime.Today),
+                StatusChangedWhen = DateOnly.FromDateTime(DateTime.Today),
+                Status = RequestStatus.Approved, //TODO: поменять на PendingReview
+                Benefit = benefit,
+                Employee = employee
+            };
+
+            var benefitRequestResult = await _benefitRequestService.AddBenefitRequestAsync(benefitRequest);
+            if (benefitRequestResult.IsFailure)
+            {
+                return benefitRequestResult.Error;
+            }
+            
+            return Result.Success();
         }
 
         public async Task<List<Benefit>> GetAllBenefitsAsync()

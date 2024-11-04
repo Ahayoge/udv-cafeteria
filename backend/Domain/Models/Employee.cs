@@ -19,5 +19,6 @@ namespace UDV_Benefits.Domain.Models
         public DateOnly StartedWorkWhen { get; set; }
 
         public User User { get; set; }
+        public ICollection<BenefitRequest> BenefitRequests { get; set; } = new List<BenefitRequest>();
     }
 }

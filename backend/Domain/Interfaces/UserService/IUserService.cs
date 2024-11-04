@@ -7,6 +7,7 @@ namespace UDV_Benefits.Domain.Interfaces.UserService
     public interface IUserService
     {
         public Task<ValueResult<User>> FindByEmailAsync(string email);
+        public Task<ValueResult<User>> FindByIdAsync(Guid id);
         public bool CheckPassword(Models.User user, string password);
         public Task<List<Role>> GetRolesAsync(User user);
         public Task<Result> AddUserAsync(User user);
