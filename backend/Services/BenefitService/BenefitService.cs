@@ -35,5 +35,16 @@ namespace UDV_Benefits.Services.BenefitService
                 .ToListAsync();
             return benefits;
         }
+
+        public async Task<ValueResult<Benefit>> GetBenefitByIdWorkerAsync(Guid id)
+        {
+            var benefitResult = await _dbContext.Benefits
+                .FirstOrDefaultAsync(b => b.Id == id);
+            if (benefitResult == null)
+            {
+                return BenefitErrors.BenefitNotFoundById;
+            }
+            return benefitResult;
+        }
     }
 }

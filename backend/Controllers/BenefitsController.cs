@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UDV_Benefits.Domain.DTO.Benefit.AddBenefit;
 using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
+using UDV_Benefits.Domain.DTO.Benefit.Worker.GetBenefitById;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.CategoryService;
 using UDV_Benefits.Domain.Mapper.BenefitMapper;
@@ -52,6 +53,20 @@ namespace UDV_Benefits.Controllers
             var benefitDto = benefitResult.Value.ToDto<AddBenefitResponse>();
 
             return Created(String.Empty, benefitDto);
+        }
+
+        [HttpGet("{id:guid}")]
+        [Authorize(Policy = Policy.Worker)]
+        public async Task<IActionResult> GetBenefitByIdWorker(Guid id)
+        {
+            var benefitResult = await _benefitService.GetBenefitByIdWorkerAsync(id);
+            if (benefitResult.IsFailure) 
+            {
+                return NotFound(new { error = benefitResult.Error!.Description });
+            }
+
+            var benefitDto = benefitResult.Value.ToDto<GetBenefitByIdResponse>();
+            return Ok(benefitDto);
         }
     }
 }
