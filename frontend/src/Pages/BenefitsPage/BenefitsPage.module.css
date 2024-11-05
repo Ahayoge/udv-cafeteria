@@ -1,0 +1,115 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 40px;
+    margin: 0 auto;
+    max-width: 1440px;
+    height: 100%;
+    width: 100%;
+    padding: 25px 45px;
+    grid-template-areas:
+        'top top'
+        'filters benefits';
+}
+
+.aside {
+    display: grid;
+    grid-template-rows: 50px auto;
+}
+
+.main {
+    display: grid;
+    grid-template-rows: 50px auto;
+    grid-template-columns: auto calc((100% - 120px) / 4);
+    gap: 40px;
+    grid-template-areas:
+        'search benefit_button'
+        'benefits benefits';
+}
+
+.list_wrap {
+    grid-area: benefits;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(auto-fill, 350px);
+    gap: 40px;
+    width: 100%;
+}
+.page_top {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 45px;
+    gap: 40px;
+}
+
+.search_input {
+    grid-area: search;
+    width: 100%;
+    padding: 17px 25px;
+    background-color: var(--graphite);
+    color: var(--white);
+    outline: none;
+    font-size: 20px;
+    line-height: 24px;
+    border: 1px var(--white) solid;
+    border-radius: 10px;
+}
+
+.benefit_button {
+    grid-area: benefit_button;
+    background-color: var(--mint);
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 10px;
+    color: var(--graphite);
+    justify-content: center;
+    align-items: center;
+    transition: .1s ease-in-out;
+}
+
+.benefit_button:hover,
+.benefit_button:active {
+    background-color: transparent;
+    border: 3px var(--mint) solid;
+    color: var(--mint);
+}
+
+.search_input::placeholder {
+    color: var(--white);
+}
+
+.filters {
+    flex-direction: column;
+    color: var(--white);
+}
+
+.filters_title {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.filters_label {
+    gap: 10px;
+    font-size: 17px;
+    line-height: 26px;
+    user-select: none;
+    align-items: center;
+}
+
+.checkbox {
+    accent-color: var(--mint);
+    height: 16px;
+    width: 16px;
+}
+
+.admin_mode_text {
+    color: var(--white);
+    font-size: 20px;
+    line-height: 24px;
+}
+

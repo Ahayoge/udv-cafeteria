@@ -1,0 +1,58 @@
+.profile {
+    position: absolute;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+    width: 400px;
+    background-color: var(--dark-blue);
+    z-index: 10;
+    top: 50px;
+    right: 0;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px #00000025;
+    padding: 30px;
+}
+
+.profile_info {
+    flex-direction: column;
+    gap: 25px;
+}
+
+.name {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.8px;
+    color: var(--white);
+}
+
+.info {
+    font-size: 16px;
+    color: var(--white);
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.button {
+    margin-top: auto;
+    height: 41px;
+    font-size: 16px;
+    /* border: 1px var(--white) solid; */
+    color: var(--graphite);
+    background-color: var(--mint);
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    border-radius: 5px;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.button:hover,
+.button:active {
+    background-color: transparent;
+    border: 3px var(--mint) solid;
+    color: var(--mint);
+}

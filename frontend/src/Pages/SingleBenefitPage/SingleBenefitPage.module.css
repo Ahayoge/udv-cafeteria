@@ -1,0 +1,73 @@
+.container {
+    margin: 0 auto;
+    padding: 50px 45px;
+    width: 100%;
+    max-width: 1440px;
+    height: 100%;
+}
+
+.benefit_container {
+    justify-content: space-between;
+    width: 100%;
+    gap: 100px;
+}
+
+.benefit_info {
+    gap: 50px;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 48px;
+    color: var(--white);
+    font-weight: bold;
+}
+
+.description {
+    font-size: 32px;
+    color: var(--white);
+    font-family: 'LXGW WenKai Mono TC';
+}
+
+.table {
+    color: var(--white);
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.tr {
+    text-align: left;
+    flex-grow: 0;
+    gap: 30px;
+}
+
+.th {
+    flex-basis: 200px;
+    flex-shrink: 0;
+}
+
+.tbody {
+    flex-direction: column;
+    gap: 30px;
+}
+
+.button {
+    background-color: var(--mint);
+    font-size: 20px;
+    line-height: 24px;
+    border-radius: 10px;
+    color: var(--graphite);
+    justify-content: center;
+    align-items: center;
+    transition: .1s ease-in-out;
+    height: 60px;
+    width: 200px;
+}
+
+.button:hover,
+.button:active {
+    background-color: transparent;
+    border: 3px var(--mint) solid;
+    color: var(--mint);
+}
+
