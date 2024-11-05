@@ -25,5 +25,16 @@ namespace UDV_Benefits.Services.EmployeeService
                        && e.BirthDate == employee.BirthDate);
             return existingEmployee != null;
         }
+
+        public async Task<ValueResult<Employee>> GetProfileByUserIdAsync(Guid userId)
+        {
+            var employee = await _dbContext.Employees
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+            if (employee == null)
+            {
+                return EmployeeErrors.EmployeeNotFoundByUserId;
+            }
+            return employee;
+        }
     }
 }
