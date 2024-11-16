@@ -20,15 +20,20 @@ namespace UDV_Benefits.Services.BenefitRequestService
         {
             var existingBenefitRequest = await _dbContext.BenefitRequests
                 .FirstOrDefaultAsync(br =>
-                br.Benefit == benefitRequest.Benefit 
+                br.Benefit == benefitRequest.Benefit
                 && br.Employee == benefitRequest.Employee
-                && br.Status == benefitRequest.Status
                 && br.Status == RequestStatus.PendingReview);
-            //TODO: проверка на то, что у сотрудника эта льгота не активирована
-            if (existingBenefitRequest != null) 
-            {
+            if (existingBenefitRequest != null)
                 return BenefitRequestErrors.BenefitRequestExists;
-            }
+
+            var activatedEmployeeBenefit = await _dbContext.EmployeeBenefits
+                .FirstOrDefaultAsync(eb => 
+                eb.BenefitId == benefitRequest.Benefit.Id
+                && eb.EmployeeId == benefitRequest.Employee.Id
+                && eb.Status == EmployeeBenefitStatus.Active);
+            if (activatedEmployeeBenefit != null)
+                return EmployeeBenefitErrors.EmployeeBenefitIsActive;
+
             await _dbContext.BenefitRequests.AddAsync(benefitRequest);
             await _dbContext.SaveChangesAsync();
             return Result.Success();

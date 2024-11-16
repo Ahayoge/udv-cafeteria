@@ -6,6 +6,7 @@ using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
+using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 
 namespace UDV_Benefits.Services.BenefitService
 {
@@ -13,11 +14,15 @@ namespace UDV_Benefits.Services.BenefitService
     {
         private readonly AppDbContext _dbContext;
         private readonly IBenefitRequestService _benefitRequestService;
+        private readonly IEmployeeBenefitService _employeeBenefitService;
 
-        public BenefitService(AppDbContext dbContext, IBenefitRequestService benefitRequestService)
+        public BenefitService(AppDbContext dbContext, 
+            IBenefitRequestService benefitRequestService, 
+            IEmployeeBenefitService employeeBenefitService)
         {
             _dbContext = dbContext;
             _benefitRequestService = benefitRequestService;
+            _employeeBenefitService = employeeBenefitService;
         }
 
         public async Task<ValueResult<Benefit>> AddBenefitAsync(Benefit benefit)
@@ -37,7 +42,7 @@ namespace UDV_Benefits.Services.BenefitService
         {
             if (benefit.ExperienceYearsRequired != null)
             {
-                if (benefit.ExperienceYearsRequired !=
+                if (benefit.ExperienceYearsRequired >
                 DateOnly.FromDateTime(DateTime.Today).Year - employee.StartedWorkWhen.Year)
                 {
                     return BenefitRequestErrors.BenefitRequestNoAccessExperience;
@@ -73,8 +78,21 @@ namespace UDV_Benefits.Services.BenefitService
 
             var benefitRequestResult = await _benefitRequestService.AddBenefitRequestAsync(benefitRequest);
             if (benefitRequestResult.IsFailure)
+                return benefitRequestResult.Error!;
+            //TODO: можно было бы сделать транзакцию?
+            if (benefitRequest.Status == RequestStatus.Approved)
             {
-                return benefitRequestResult.Error;
+                var employeeBenefit = new EmployeeBenefit 
+                {
+                    Status = EmployeeBenefitStatus.Active,
+                    ActivatedWhen = benefitRequest.AppliedWhen,
+                    DeactivatedWhen = benefitRequest.AppliedWhen.AddDays(benefit.ValidityPeriodDays),
+                    Employee = employee,
+                    Benefit = benefit
+                };
+                var employeeBenefitResult = await _employeeBenefitService.AddEmployeeBenefitAsync(employeeBenefit);
+                if (employeeBenefitResult.IsFailure)
+                    return employeeBenefitResult.Error!;
             }
             
             return Result.Success();

@@ -19,5 +19,6 @@ namespace UDV_Benefits.Domain.Models
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
         public ICollection<BenefitRequest> BenefitRequests { get; set; } = new List<BenefitRequest>();
+        public ICollection<EmployeeBenefit> EmployeeBenefits { get; set; } = new List<EmployeeBenefit>();
     }
 }

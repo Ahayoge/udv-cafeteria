@@ -34,6 +34,10 @@ namespace UDV_Benefits.Infrastructure.Data
             modelBuilder.Entity<BenefitRequest>()
                 .Property(br => br.Status)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<EmployeeBenefit>()
+                .Property(eb => eb.Status)
+                .HasConversion<string>();
         }
 
         public DbSet<User> Users { get; set; }
@@ -42,5 +46,6 @@ namespace UDV_Benefits.Infrastructure.Data
         public DbSet<Benefit> Benefits { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<BenefitRequest> BenefitRequests { get; set; }
+        public DbSet<EmployeeBenefit> EmployeeBenefits { get; set; }
     }
 }

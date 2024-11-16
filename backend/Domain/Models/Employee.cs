@@ -20,5 +20,6 @@ namespace UDV_Benefits.Domain.Models
 
         public User User { get; set; }
         public ICollection<BenefitRequest> BenefitRequests { get; set; } = new List<BenefitRequest>();
+        public ICollection<EmployeeBenefit> EmployeeBenefits { get; set; } = new List<EmployeeBenefit>();
     }
 }

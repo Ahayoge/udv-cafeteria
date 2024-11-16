@@ -4,6 +4,7 @@ using UDV_Benefits.Domain.Interfaces.AuthService;
 using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.CategoryService;
+using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.RegisterService;
 using UDV_Benefits.Domain.Interfaces.UserService;
@@ -13,6 +14,7 @@ using UDV_Benefits.Services.AuthService;
 using UDV_Benefits.Services.BenefitRequestService;
 using UDV_Benefits.Services.BenefitService;
 using UDV_Benefits.Services.CategoryService;
+using UDV_Benefits.Services.EmployeeBenefitService;
 using UDV_Benefits.Services.EmployeeService;
 using UDV_Benefits.Services.RegisterService;
 using UDV_Benefits.Services.UserService;
@@ -40,6 +42,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IBenefitService, BenefitService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBenefitRequestService, BenefitRequestService>();
+builder.Services.AddScoped<IEmployeeBenefitService, EmployeeBenefitService>();
 
 #if RELEASE
 builder.Services.AddDbContext<AppDbContext>(
