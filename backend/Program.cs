@@ -76,9 +76,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.Urls.Add("http://0.0.0.0:7178");
-
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseCors(myAllowSpecificOrigins);
 
 app.UseAuthentication();
