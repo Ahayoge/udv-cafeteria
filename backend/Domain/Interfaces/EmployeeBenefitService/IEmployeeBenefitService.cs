@@ -6,5 +6,6 @@ namespace UDV_Benefits.Domain.Interfaces.EmployeeBenefitService
     public interface IEmployeeBenefitService
     {
         public Task<Result> AddEmployeeBenefitAsync(EmployeeBenefit employeeBenefit);
+        public Task<List<EmployeeBenefit>> GetActiveEmployeeBenefitsAsync(Guid userId);
     }
 }
