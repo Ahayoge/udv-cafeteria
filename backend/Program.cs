@@ -9,6 +9,7 @@ using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.RegisterService;
 using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Extensions;
+using UDV_Benefits.Infrastructure;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Services.AuthService;
 using UDV_Benefits.Services.BenefitRequestService;
@@ -53,6 +54,8 @@ builder.Services.AddDbContext<AppDbContext>(
     options => options.UseNpgsql(builder.Configuration.GetConnectionString("UdvBenefitsDb"))
     );
 #endif
+
+builder.Services.AddHostedService<StatusUpdateService>();
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>

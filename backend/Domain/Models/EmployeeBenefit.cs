@@ -7,8 +7,7 @@ namespace UDV_Benefits.Domain.Models
         public Guid Id { get; set; }
         public EmployeeBenefitStatus Status { get; set; }
         public DateOnly ActivatedWhen { get; set; }
-        //TODO: дата деактивации может быть null
-        public DateOnly DeactivatedWhen { get; set; } //TODO: синхронизировать со статусом
+        public DateOnly DeactivatedWhen { get; set; }
 
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }

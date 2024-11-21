@@ -2,6 +2,7 @@
 using UDV_Benefits.Domain.Errors;
 using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 using UDV_Benefits.Domain.Models;
+using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Infrastructure.Data;
 
 namespace UDV_Benefits.Services.EmployeeBenefitService
@@ -29,7 +30,7 @@ namespace UDV_Benefits.Services.EmployeeBenefitService
                 .Include(eb => eb.Employee)
                 .Where(eb => 
                 eb.Employee.UserId == userId
-                && DateOnly.FromDateTime(DateTime.Today) <= eb.DeactivatedWhen) //TODO: проверка по статусу
+                && eb.Status == EmployeeBenefitStatus.Active)
                 .ToListAsync();
             return result;
         }
