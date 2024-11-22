@@ -6,7 +6,6 @@ import { useToast } from '../../Store/ToastContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NewLoginForm = ({ changeForm }: any) => {
-    const aboba = useToast();
     const { notify } = useToast(); // получаем notify из контекста
     type Props = {
         label: string;
@@ -112,13 +111,6 @@ const NewLoginForm = ({ changeForm }: any) => {
                     </p>
                     <button className={s.button} type='submit' disabled={isSubmitting}>
                         Войти
-                    </button>
-                    <button
-                        onClick={() => {
-                            console.log(aboba.notify);
-                        }}
-                        type='button'>
-                        Проверка
                     </button>
                 </Form>
             )}
