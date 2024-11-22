@@ -22,7 +22,7 @@ const SingleBenefitPage = () => {
     const getBenefitData = () => {
         let token = localStorage.getItem('authToken');
         axios
-            .get(`http://95.82.231.190:7178/api/benefits/${id}`, {
+            .get(`/benefits/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -34,7 +34,7 @@ const SingleBenefitPage = () => {
 
     const requestBenefit = () => {
         let token = localStorage.getItem('authToken');
-        axios.post(`http://95.82.231.190:7178/api/benefits/${id}/apply`, null, {
+        axios.post(`/benefits/${id}/apply`, null, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -45,50 +45,47 @@ const SingleBenefitPage = () => {
         getBenefitData();
     }, []);
     return (
-        <div className={s.container}>
-            <div className={`flex ${s.benefit_container}`}>
-                <img className={s.img} src='/benefit-img.png' alt='#' />
-                <div className={`flex ${s.benefit_info}`}>
-                    <h2 className={s.title}>{benefitData?.name}</h2>
-                    <p className={s.description}>{benefitData?.description}</p>
+        <div className={s.benefit_container}>
+            <img className={s.img} src='/benefit-img.png' alt='#' />
+            <div className={`flex ${s.benefit_info}`}>
+                <h2 className={s.title}>{benefitData?.name}</h2>
+                <p className={s.description}>{benefitData?.description}</p>
 
-                    <table className={s.table}>
-                        <tbody className={`flex ${s.tbody}`}>
-                            {benefitData?.validityPeriodDays && (
-                                <tr className={`flex ${s.tr}`}>
-                                    <th className={s.th}>Срок действия:</th>
-                                    <td>{benefitData?.validityPeriodDays} дней</td>
-                                </tr>
-                            )}
+                <table className={s.table}>
+                    <tbody className={`flex ${s.tbody}`}>
+                        {benefitData?.validityPeriodDays && (
                             <tr className={`flex ${s.tr}`}>
-                                <th className={s.th}>Условия:</th>
-                                <td>
-                                    {benefitData?.conditions.ucoinPrice && (
-                                        <p>{benefitData?.conditions.ucoinPrice} u-coins</p>
-                                    )}
-                                    {benefitData?.conditions.experienceYearsRequired && (
-                                        <p>
-                                            Стаж {benefitData?.conditions.experienceYearsRequired}{' '}
-                                            лет
-                                        </p>
-                                    )}
-                                </td>
+                                <th className={s.th}>Срок действия:</th>
+                                <td>{benefitData?.validityPeriodDays} дней</td>
                             </tr>
+                        )}
+                        <tr className={`flex ${s.tr}`}>
+                            <th className={s.th}>Условия:</th>
+                            <td>
+                                {benefitData?.conditions.ucoinPrice && (
+                                    <p>{benefitData?.conditions.ucoinPrice} u-coins</p>
+                                )}
+                                {benefitData?.conditions.experienceYearsRequired && (
+                                    <p>
+                                        Стаж {benefitData?.conditions.experienceYearsRequired} лет
+                                    </p>
+                                )}
+                            </td>
+                        </tr>
 
-                            <tr className={`flex ${s.tr}`}>
-                                <th className={s.th}>Примечания:</th>
-                                <td>
-                                    {benefitData?.additionalInfo
-                                        ? benefitData?.additionalInfo
-                                        : 'Данная льгота не требует дополнительных условий'}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button className={s.button} onClick={requestBenefit}>
-                        Подать заявку
-                    </button>
-                </div>
+                        <tr className={`flex ${s.tr}`}>
+                            <th className={s.th}>Примечания:</th>
+                            <td>
+                                {benefitData?.additionalInfo
+                                    ? benefitData?.additionalInfo
+                                    : 'Данная льгота не требует дополнительных условий'}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button className={s.button} onClick={requestBenefit}>
+                    Подать заявку
+                </button>
             </div>
         </div>
     );

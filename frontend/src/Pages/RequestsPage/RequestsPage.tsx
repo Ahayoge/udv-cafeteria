@@ -15,7 +15,7 @@ const RequestsPage = () => {
     const getRequestedBenefits = () => {
         let token = localStorage.getItem('authToken');
         axios
-            .get('http://95.82.231.190:7178/api/benefitRequests', {
+            .get('/benefitRequests', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

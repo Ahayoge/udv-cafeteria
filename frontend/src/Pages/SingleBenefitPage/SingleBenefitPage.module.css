@@ -1,15 +1,17 @@
-.container {
-    margin: 0 auto;
-    padding: 50px 45px;
-    width: 100%;
-    max-width: 1440px;
-    height: 100%;
-}
-
 .benefit_container {
+    display: grid;
+    grid-template-columns: 30% auto;
+    padding: 40px;
     justify-content: space-between;
     width: 100%;
-    gap: 100px;
+    gap: 50px;
+    background-color: #1a4c5d40;
+    border-radius: 20px;
+    height: calc(100% - 45px)
+}
+
+.img {
+    min-width: 10%;
 }
 
 .benefit_info {
@@ -48,7 +50,7 @@
 
 .tbody {
     flex-direction: column;
-    gap: 30px;
+    gap: 10px;
 }
 
 .button {

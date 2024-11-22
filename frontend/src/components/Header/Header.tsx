@@ -7,7 +7,7 @@ const Header = () => {
     const headerLinks = [
         { link: '/benefits/all', text: 'Все льготы', iconSrc: '/grid.svg' },
         { link: '/benefits/my', text: 'Мои льготы', iconSrc: '/check-mark.svg' },
-        { link: '/benefits/new', text: 'История льгот', iconSrc: '/collection.svg' },
+        { link: '/benefits/my', text: 'История льгот', iconSrc: '/collection.svg' },
         { link: '/benefits/requested', text: 'Мои заявки', iconSrc: '/book.svg' },
     ];
     const [isVisible, setVisible] = useState(false);
