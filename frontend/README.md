@@ -1,50 +1,14 @@
-# React + TypeScript + Vite
+# Кафетерий льгот для сотрудников UDV, frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Инструкция по запуску:
 
-Currently, two official plugins are available:
+1. Клонировать в любую удобную папку
+2. npm i / npm install
+3. Установить необходимые зависимости, если потребуется (они должны установиться автоматически, но я не проверял, если честно)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Небольшие пояснения для оценивающих:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. При успешной авторизации есть всплывающее уведомление справа. Оно идёт 5 секунд, и оно тестовое. Ждать 5 секунд неудобно, поэтому я либо сокращу время, либо уберу уведомление совсем. Пока так.
+2. Для того, чтобы отобразить кнопку создания льготы, проверяется, какие роли имеет пользователь. Роли получаются с сервера при входе в ЛК и пока хранятся в local storage. Это неоптимально, чуть позже я перепишу код и сделаю хранение токена авторизации и ролей в context. Но пока так.
+3. Некоторые страницы сервиса недоступны, напишу их чуть позже.
+4. ![Котик](https://i.pinimg.com/originals/7e/1b/fd/7e1bfd1191112533fe9872ef47398823.jpg)

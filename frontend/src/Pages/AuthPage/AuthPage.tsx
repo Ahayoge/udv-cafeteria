@@ -15,6 +15,7 @@ const AuthPage = () => {
         <div className={clsx('flex', s.background, isLoginPage ? s.img_login : s.img_register)}>
             <div className={clsx('flex', s.form_container)}>
                 <img className={s.logo} src='udv-logo.svg' alt='Логотип UDV Group' />
+                <h2 className={s.title}>{!isLoginPage ? 'Вход' : 'Регистрация'}</h2>
                 {!isLoginPage ? (
                     <LoginForm changeForm={handlePageSwitch} />
                 ) : (

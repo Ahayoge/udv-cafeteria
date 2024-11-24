@@ -11,16 +11,17 @@
 }
 
 .img_login {
-    background: url('/login-page-bg.webp') no-repeat right, linear-gradient(var(--graphite), var(--graphite));
+    background: url('/login-page-bg.webp') no-repeat right,
+        linear-gradient(var(--graphite), var(--graphite));
 }
 
 .img_register {
-    background: url('/register-page-bg.webp') no-repeat right, linear-gradient(var(--graphite), var(--graphite));
+    background: url('/register-page-bg.webp') no-repeat right,
+        linear-gradient(var(--graphite), var(--graphite));
 }
 
 .form_container {
     flex-direction: column;
-    flex-basis: 600px;
     height: 100%;
     margin: auto;
     padding: 40px;
@@ -34,11 +35,14 @@
     flex-direction: column;
     gap: 20px;
     flex-grow: 1;
+    width: 500px;
 }
 
 .register_form {
     flex-direction: column;
-    height: 100%;
+    gap: 20px;
+    max-width: 900px;
+    flex-basis: 100%;
 }
 
 .logo {
@@ -58,11 +62,22 @@
     gap: 10px;
 }
 
-.input {
+.wrap {
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.wrap .input_wrap {
+    flex-basis: calc(33.33% - 40px / 3);
+    flex-grow: 1;
+}
+.input,
+.input[type='date'] {
     background-color: transparent;
     border: 1px solid var(--white);
     padding: 15px;
     font-size: 16px;
+    height: 52px;
     line-height: 19.2px;
     border-radius: 10px;
     color: var(--white);
@@ -82,14 +97,12 @@
 }
 
 .label {
-    margin-left: 20px;
-    position: relative;
     color: var(--white);
 }
 
 .button {
     margin-top: auto;
-    padding: 15px 80px;
+    padding: 15px 75px;
     flex-basis: 60px;
     flex-shrink: 0;
     background-color: var(--mint);
@@ -98,6 +111,11 @@
     border-radius: 10px;
     color: var(--graphite);
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.register_form .button {
+    width: calc(33.33% - 40px / 3);
+    align-self: center;
 }
 
 .button:hover,
@@ -119,4 +137,9 @@
 
 .option {
     background-color: var(--graphite);
+}
+
+.error {
+    color: rgb(255, 99, 99);
+    font-weight: 400;
 }

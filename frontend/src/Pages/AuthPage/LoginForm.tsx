@@ -1,25 +1,26 @@
 import axios from 'axios';
-import s from './AuthPage.module.css';
-import { useState } from 'react';
-import { sha256 } from 'js-sha256';
 import { useNavigate } from 'react-router-dom';
+import { Formik, Form, useField } from 'formik';
+import s from './AuthPage.module.css';
+import { useToast } from '../../Store/ToastContext';
+import 'react-toastify/dist/ReactToastify.css';
 
-const LoginForm = ({ changeForm }: any) => {
+const NewLoginForm = ({ changeForm }: any) => {
+    const { notify } = useToast(); // получаем notify из контекста
+    type Props = {
+        label: string;
+        name: string;
+        type: string;
+        id: string;
+        placeholder?: string;
+    };
+
+    type User = {
+        email: string;
+        password: string;
+    };
+
     const navigate = useNavigate();
-    // Дефолтные значения полей ввода
-    const defaultInputValues = {
-        email: '',
-        password: '',
-    };
-
-    // Храним значения полей ввода
-    const [inputs, setInputs] = useState(defaultInputValues);
-
-    // Функция для управления полями ввода формы
-    const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputs(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
-    };
-
     // Декодируем JWT-токен, полученный с сервера
     const getUserRoles = (token: string) => {
         const data = JSON.parse(atob(token.split('.')[1]));
@@ -29,77 +30,92 @@ const LoginForm = ({ changeForm }: any) => {
 
     // Функция входа на сайт. Отправляем запрос на сервер, после чего
     // либо записываем токен в localStorage, либо выводим в консоль ошибку
-    const Login: any = () => {
-        const hashedPassword = sha256(inputs.password);
+    const Login: any = (email: string, password: string) => {
         axios
-            .post('http://95.82.231.190:7178/api/auth/login', {
-                email: inputs.email,
-                password: hashedPassword,
+            .post('auth/login', {
+                email: email,
+                password: password,
             })
-            .then(function (response) {
+            .then(response => {
                 if (response.status === 200) {
                     localStorage.setItem('authToken', response.data.accessToken);
                     const roles = getUserRoles(response.data.accessToken);
                     localStorage.setItem('roles', roles);
-                    navigate('/benefits/all');
+                    notify('Успешная авторизация', 'success', {
+                        position: 'bottom-right',
+                        onClose() {
+                            navigate('/benefits/all');
+                        },
+                    });
                 }
             })
-            .catch(function (error) {
-                alert(error.response.data.error);
+            .catch(error => {
+                notify(error.response.data.error, 'error', { position: 'bottom-right' });
             });
     };
 
+    const MyTextInput = ({ label, ...props }: Props) => {
+        const [field, meta] = useField(props);
+        return (
+            <div className={`flex ${s.input_wrap}`}>
+                <label className={s.label} htmlFor={props.id || props.name}>
+                    {label}
+                </label>
+                <input className={s.input} {...field} {...props} />
+                {meta.touched && meta.error ? <p className={s.error}>{meta.error}</p> : null}
+            </div>
+        );
+    };
+
     return (
-        <form
-            className={`flex ${s.login_form}`}
-            action='http://95.82.231.190:7178/api/auth/login'
-            method='post'>
-            <h2 className={s.title}>Вход</h2>
-            <fieldset className={`flex ${s.input_wrap}`}>
-                <label htmlFor='email' className={s.label}>
-                    Почта в домене udv.group
-                </label>
-                <input
-                    className={s.input}
-                    value={inputs.email}
-                    onChange={e => handleInputs(e)}
-                    type='email'
-                    id='email'
-                    name='email'
-                    placeholder='ivanovivan@udv.group'
-                />
-            </fieldset>
-
-            <fieldset className={`flex ${s.input_wrap}`}>
-                <label htmlFor='password' className={s.label}>
-                    Пароль
-                </label>
-                <input
-                    className={s.input}
-                    value={inputs.password}
-                    onChange={e => handleInputs(e)}
-                    type='password'
-                    id='password'
-                    name='password'
-                />
-            </fieldset>
-
-            <p className={s.hint}>
-                Нет аккаунта? <span onClick={changeForm}>Зарегистрироваться</span>
-            </p>
-            <p className={s.hint}>
-                <span
-                    onClick={() => {
-                        alert('Сочувствуем! Но пока ничем помочь не можем.');
-                    }}>
-                    Не помните пароль?
-                </span>
-            </p>
-
-            <button className={s.button} type='button' onClick={Login}>
-                Войти
-            </button>
-        </form>
+        <Formik
+            validateOnChange={false}
+            validateOnBlur={false}
+            initialValues={{ email: '', password: '' }}
+            validate={(values: User) => {
+                const errors: Partial<User> = {};
+                if (!values.email) {
+                    errors.email = 'Введите Email';
+                } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+                    errors.email = 'Email указан неверно';
+                }
+                if (!values.password) {
+                    errors.password = 'Введите пароль';
+                }
+                return errors;
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+                Login(values.email, values.password);
+                setSubmitting(false);
+            }}>
+            {({ isSubmitting }) => (
+                <Form className={`flex ${s.login_form}`}>
+                    <MyTextInput
+                        label='Почта в домене udv.group'
+                        name='email'
+                        type='email'
+                        id='email'
+                        placeholder='ivanovivan@udv.group'
+                    />
+                    <MyTextInput label='Пароль' name='password' type='password' id='password' />
+                    <p className={s.hint}>
+                        Нет аккаунта? <span onClick={changeForm}>Зарегистрироваться</span>
+                    </p>
+                    <p className={s.hint}>
+                        <span
+                            onClick={() => {
+                                alert('Сочувствуем! Но пока ничем помочь не можем.');
+                            }}>
+                            Не помните пароль?
+                        </span>
+                    </p>
+                    <button className={s.button} type='submit' disabled={isSubmitting}>
+                        Войти
+                    </button>
+                </Form>
+            )}
+        </Formik>
     );
 };
-export default LoginForm;
+
+export default NewLoginForm;
