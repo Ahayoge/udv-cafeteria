@@ -5,7 +5,7 @@ const MyBenefitsPage = () => {
 
     return (
         <ul className={s.container}>
-            <li>Заглушка)</li>
+            <li>Заглушка</li>
         </ul>
     );
 };

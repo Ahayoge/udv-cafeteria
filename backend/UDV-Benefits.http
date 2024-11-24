@@ -1,0 +1,6 @@
+@UDV_Benefits_HostAddress = http://localhost:5294
+
+GET {{UDV_Benefits_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
