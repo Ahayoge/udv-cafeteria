@@ -49,7 +49,9 @@ namespace UDV_Benefits.Services.UserService
 
         public async Task<ValueResult<User>> FindByEmailAsync(string email)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _dbContext.Users
+                .Include(u => u.Employee)
+                .FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
                 return ValueResult<User>.Failure(UserErrors.UserNotFound);

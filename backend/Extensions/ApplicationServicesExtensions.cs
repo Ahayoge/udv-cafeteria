@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UDV_Benefits.Domain.Enums;
+using UDV_Benefits.Domain.Models;
+using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Utilities;
 
 namespace UDV_Benefits.Extensions
@@ -28,6 +33,22 @@ namespace UDV_Benefits.Extensions
                     ValidAudience = AuthOptions.AUDIENCE,
                     ValidIssuer = AuthOptions.ISSUER,
                     IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey()
+                };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnTokenValidated = async context =>
+                    {
+                        var userId = Guid.Parse(context.Principal.Claims.FirstOrDefault(c => c.Type == "userId")?.Value);
+                        var dbcontext = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
+                        var user = await dbcontext.Users.FindAsync(userId);
+                        if (user == null)
+                        {
+                            var failureMessage = "Пользователя с таким id не существует";
+                            context.Fail(failureMessage);
+                            Console.WriteLine(failureMessage);
+                            return;
+                        }
+                    } //TODO: добавить установку сообщения об ошибке в WWW-Authenticate
                 };
             });
         }

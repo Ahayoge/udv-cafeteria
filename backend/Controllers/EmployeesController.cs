@@ -23,8 +23,8 @@ namespace UDV_Benefits.Controllers
         [Authorize(Policy = Policy.Authenticated)]
         public async Task<IActionResult> GetProfile()
         {
-            var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value);
-            var profileResult = await _employeeService.GetProfileByUserIdAsync(userId);
+            var employeeId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "employeeId")?.Value);
+            var profileResult = await _employeeService.GetEmployeeById(employeeId);
             if (profileResult.IsFailure)
             {
                 return BadRequest(new { error = profileResult.Error!.Description });

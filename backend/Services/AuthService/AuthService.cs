@@ -38,7 +38,8 @@ namespace UDV_Benefits.Services.AuthService
             var userRoles = await _userService.GetRolesAsync(user);
             var claims = new List<Claim>
             {
-                new Claim("userId", user.Id.ToString())
+                new Claim("userId", user.Id.ToString()),
+                new Claim("employeeId", user.Employee.Id.ToString())
             };
             foreach (var userRole in userRoles)
                 claims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));

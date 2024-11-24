@@ -19,12 +19,12 @@ namespace UDV_Benefits.Controllers
             _benefitRequestService = benefitRequestService;
         }
 
-        [HttpGet]
+        [HttpGet("my")]
         [Authorize(Policy = Policy.Worker)]
-        public async Task<IActionResult> GetAllBenefitRequests()
+        public async Task<IActionResult> GetAllMyBenefitRequests()
         {
-            var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value);
-            var benefitRequests = await _benefitRequestService.GetWorkerBenefitRequestsAsync(userId);
+            var employeeId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "employeeId")?.Value);
+            var benefitRequests = await _benefitRequestService.GetBenefitRequestsByEmployeeIdAsync(employeeId);
             var benefitRequestsDto = benefitRequests
                 .Select(br => br.ToDto<BenefitRequestDto>());
             return Ok(benefitRequestsDto);

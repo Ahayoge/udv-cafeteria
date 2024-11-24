@@ -7,6 +7,7 @@ using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Infrastructure.Data;
 using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
+using UDV_Benefits.Domain.Interfaces.EmployeeService;
 
 namespace UDV_Benefits.Services.BenefitService
 {
@@ -15,14 +16,17 @@ namespace UDV_Benefits.Services.BenefitService
         private readonly AppDbContext _dbContext;
         private readonly IBenefitRequestService _benefitRequestService;
         private readonly IEmployeeBenefitService _employeeBenefitService;
+        private readonly IEmployeeService _employeeService;
 
-        public BenefitService(AppDbContext dbContext, 
-            IBenefitRequestService benefitRequestService, 
-            IEmployeeBenefitService employeeBenefitService)
+        public BenefitService(AppDbContext dbContext,
+            IBenefitRequestService benefitRequestService,
+            IEmployeeBenefitService employeeBenefitService,
+            IEmployeeService employeeService)
         {
             _dbContext = dbContext;
             _benefitRequestService = benefitRequestService;
             _employeeBenefitService = employeeBenefitService;
+            _employeeService = employeeService;
         }
 
         public async Task<ValueResult<Benefit>> AddBenefitAsync(Benefit benefit)
@@ -38,8 +42,18 @@ namespace UDV_Benefits.Services.BenefitService
             return benefit;
         }
 
-        public async Task<Result> ApplyForBenefitAsync(Employee employee, Benefit benefit)
+        public async Task<Result> ApplyForBenefitAsync(Guid employeeId, Guid benefitId)
         {
+            var benefitResult = await GetBenefitByIdWorkerAsync(benefitId);
+            if (benefitResult.IsFailure)
+            {
+                return benefitResult.Error!;
+            }
+            var benefit = benefitResult.Value;
+
+            var employeeResult = await _employeeService.GetEmployeeById(employeeId);
+            var employee = employeeResult.Value;
+
             if (benefit.ExperienceYearsRequired != null)
             {
                 if (benefit.ExperienceYearsRequired >

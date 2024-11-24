@@ -6,6 +6,6 @@ namespace UDV_Benefits.Domain.Interfaces.BenefitRequestService
     public interface IBenefitRequestService
     {
         public Task<Result> AddBenefitRequestAsync(BenefitRequest benefitRequest);
-        public Task<List<BenefitRequest>> GetWorkerBenefitRequestsAsync(Guid userId);
+        public Task<List<BenefitRequest>> GetBenefitRequestsByEmployeeIdAsync(Guid employeeId);
     }
 }

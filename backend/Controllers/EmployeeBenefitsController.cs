@@ -22,8 +22,8 @@ namespace UDV_Benefits.Controllers
         [Authorize(Policy = Policy.Worker)]
         public async Task<IActionResult> GetAllActive()
         {
-            var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value);
-            var activeBenefits = await _employeeBenefitService.GetActiveEmployeeBenefitsAsync(userId);
+            var employeeId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "employeeId")?.Value);
+            var activeBenefits = await _employeeBenefitService.GetActiveEmployeeBenefitsByEmployeeIdAsync(employeeId);
             var activeBenefitsDto = activeBenefits.ToDto();
             return Ok(activeBenefitsDto);
         }

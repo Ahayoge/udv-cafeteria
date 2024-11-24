@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UDV_Benefits.Domain.DTO.Benefit.AddBenefit;
 using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
 using UDV_Benefits.Domain.DTO.Benefit.Worker.GetBenefitById;
+using UDV_Benefits.Domain.Errors;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.CategoryService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
@@ -77,22 +78,13 @@ namespace UDV_Benefits.Controllers
         [Authorize(Policy = Policy.Worker)]
         public async Task<IActionResult> ApplyForBenefit(Guid benefitId)
         {
-            var userId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value);
-            var userResult = await _userService.FindByIdAsync(userId);
-            if (userResult.IsFailure)
-            {
-                return NotFound(new { error = userResult.Error!.Description });
-            }
-            var benefitResult = await _benefitService.GetBenefitByIdWorkerAsync(benefitId);
-            if (benefitResult.IsFailure)
-            {
-                return NotFound(new { error = benefitResult.Error!.Description });
-            }
-            var employee = userResult.Value.Employee;
-            var benefit = benefitResult.Value;
-            var benefitRequestResult = await _benefitService.ApplyForBenefitAsync(employee, benefit);
+            var employeeId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "employeeId")?.Value);
+            
+            var benefitRequestResult = await _benefitService.ApplyForBenefitAsync(employeeId, benefitId);
             if (benefitRequestResult.IsFailure)
             {
+                if (benefitRequestResult.Error == BenefitErrors.BenefitNotFoundById)
+                    return NotFound(new { error = benefitRequestResult.Error!.Description });
                 return BadRequest(new { error = benefitRequestResult.Error!.Description });
             }
             return Ok();

@@ -26,14 +26,11 @@ namespace UDV_Benefits.Services.EmployeeService
             return existingEmployee != null;
         }
 
-        public async Task<ValueResult<Employee>> GetProfileByUserIdAsync(Guid userId)
+        public async Task<ValueResult<Employee>> GetEmployeeById(Guid employeeId)
         {
-            var employee = await _dbContext.Employees
-                .FirstOrDefaultAsync(e => e.UserId == userId);
+            var employee = await _dbContext.Employees.FindAsync(employeeId);
             if (employee == null)
-            {
-                return EmployeeErrors.EmployeeNotFoundByUserId;
-            }
+                return EmployeeErrors.EmployeeNotFoundById;
             return employee;
         }
     }

@@ -39,13 +39,11 @@ namespace UDV_Benefits.Services.BenefitRequestService
             return Result.Success();
         }
 
-        public async Task<List<BenefitRequest>> GetWorkerBenefitRequestsAsync(Guid userId)
+        public async Task<List<BenefitRequest>> GetBenefitRequestsByEmployeeIdAsync(Guid employeeId)
         {
             var benefitRequests = await _dbContext.BenefitRequests
                 .Include(br => br.Benefit)
-                .Include(br => br.Employee)
-                .ThenInclude(e => e.User)
-                .Where(br => br.Employee.UserId == userId)
+                .Where(br => br.EmployeeId == employeeId)
                 .ToListAsync();
             return benefitRequests;
         }
