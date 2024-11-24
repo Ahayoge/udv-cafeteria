@@ -43,6 +43,7 @@ const NewLoginForm = ({ changeForm }: any) => {
                     localStorage.setItem('roles', roles);
                     notify('Успешная авторизация', 'success', {
                         position: 'bottom-right',
+                        autoClose: 2000,
                         onClose() {
                             navigate('/benefits/all');
                         },
