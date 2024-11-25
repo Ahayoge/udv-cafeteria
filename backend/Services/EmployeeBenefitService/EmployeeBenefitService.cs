@@ -23,6 +23,17 @@ namespace UDV_Benefits.Services.EmployeeBenefitService
             return Result.Success();
         }
 
+        public async Task<ValueResult<EmployeeBenefit>> GetActiveEmployeeBenefitById(Guid employeeBenefitId)
+        {
+            var result = await _dbContext.EmployeeBenefits
+                .Include(eb => eb.Benefit)
+                .Where(eb => eb.Status == EmployeeBenefitStatus.Active)
+                .FirstOrDefaultAsync(eb => eb.Id == employeeBenefitId);
+            if (result == null)
+                return EmployeeBenefitErrors.ActiveEmployeeBenefitNotFoundById;
+            return result;
+        }
+
         public async Task<List<EmployeeBenefit>> GetActiveEmployeeBenefitsByEmployeeIdAsync(Guid employeeId)
         {
             var result = await _dbContext.EmployeeBenefits
