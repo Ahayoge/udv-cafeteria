@@ -20,9 +20,12 @@ namespace UDV_Benefits.Domain.Mapper.EmployeeBenefitMapper
                 {
                     ExperienceYearsRequired = benefit.ExperienceYearsRequired,
                     UcoinPrice = benefit.UcoinPrice,
-                    FormUrl = benefit.FormUrl,
+                    FormRequired = benefit.FormRequired,
                     OnboardingRequired = benefit.OnboardingRequired
-                }
+                },
+                DmsProgram = employeeBenefit.DmsProgram != null 
+                ? employeeBenefit.DmsProgram.ToString()
+                : null
             };
         }
     }

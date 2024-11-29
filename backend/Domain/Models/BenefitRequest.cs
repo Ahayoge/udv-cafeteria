@@ -14,5 +14,6 @@ namespace UDV_Benefits.Domain.Models
         public Benefit Benefit { get; set; }
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }
+        public DmsProgram? DmsProgram { get; set; }
     }
 }

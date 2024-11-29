@@ -10,6 +10,7 @@ namespace UDV_Benefits.Domain.Mapper.BenefitMapper
             return new GetBenefitByIdResponse
             {
                 Id = benefit.Id,
+                Category = benefit.Category.Name,
                 Name = benefit.Name,
                 Description = benefit.Description,
                 ValidityPeriodDays = benefit.ValidityPeriodDays,
@@ -18,7 +19,8 @@ namespace UDV_Benefits.Domain.Mapper.BenefitMapper
                 {
                     ExperienceYearsRequired = benefit.ExperienceYearsRequired,
                     UcoinPrice = benefit.UcoinPrice,
-                    FormUrl = benefit.FormUrl
+                    FormRequired = benefit.FormRequired,
+                    OnboardingRequired = benefit.OnboardingRequired
                 }
             };
         }

@@ -6,7 +6,7 @@
         {
             public int? ExperienceYearsRequired { get; set; } //TODO: стаж в виде "1 год 4 месяца"
             public int? UcoinPrice { get; set; }
-            public string? FormUrl { get; set; }
+            public bool FormRequired { get; set; }
             public bool OnboardingRequired { get; set; }
         }
         public Guid Id { get; set; }
@@ -15,5 +15,6 @@
         public DateOnly DeactivatedWhen { get; set; }
         public string AdditionalInfo { get; set; }
         public ConditionsDto Conditions { get; set; }
+        public string? DmsProgram { get; set; }
     }
 }

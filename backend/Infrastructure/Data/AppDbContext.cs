@@ -34,9 +34,15 @@ namespace UDV_Benefits.Infrastructure.Data
             modelBuilder.Entity<BenefitRequest>()
                 .Property(br => br.Status)
                 .HasConversion<string>();
+            modelBuilder.Entity<BenefitRequest>()
+                .Property(br => br.DmsProgram)
+                .HasConversion<string>();
 
             modelBuilder.Entity<EmployeeBenefit>()
                 .Property(eb => eb.Status)
+                .HasConversion<string>();
+            modelBuilder.Entity<EmployeeBenefit>()
+                .Property(eb => eb.DmsProgram)
                 .HasConversion<string>();
         }
 

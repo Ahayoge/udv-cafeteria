@@ -13,7 +13,7 @@ namespace UDV_Benefits.Domain.Models
         public int? ExperienceYearsRequired { get; set; } //TODO: стаж в виде "1 год 4 месяца", value object WorkExperience
         public int? UcoinPrice { get; set; }
         public string AdditionalInfo { get; set; }
-        public string? FormUrl { get; set; }
+        public bool FormRequired { get; set; }
         public bool OnboardingRequired { get; set; }
 
         public Guid CategoryId { get; set; }

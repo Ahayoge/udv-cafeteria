@@ -17,7 +17,7 @@ namespace UDV_Benefits.Domain.Mapper.BenefitMapper
                 {
                     ExperienceYearsRequired = benefit.ExperienceYearsRequired,
                     UcoinPrice = benefit.UcoinPrice,
-                    IsFormRequired = benefit.FormUrl != null
+                    FormRequired = benefit.FormRequired
                 }
             };
         }

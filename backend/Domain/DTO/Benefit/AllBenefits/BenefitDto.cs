@@ -8,7 +8,7 @@ namespace UDV_Benefits.Domain.DTO.Benefit.AllBenefits
         {
             public int? ExperienceYearsRequired { get; set; } //TODO: стаж в виде "1 год 4 месяца"
             public int? UcoinPrice { get; set; }
-            public bool IsFormRequired { get; set; }
+            public bool FormRequired { get; set; }
         }
         //TODO: фото
         public Guid Id { get; set; }

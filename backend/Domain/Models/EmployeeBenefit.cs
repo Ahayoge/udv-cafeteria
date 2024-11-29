@@ -8,6 +8,7 @@ namespace UDV_Benefits.Domain.Models
         public EmployeeBenefitStatus Status { get; set; }
         public DateOnly ActivatedWhen { get; set; }
         public DateOnly DeactivatedWhen { get; set; }
+        public DmsProgram? DmsProgram { get; set; }
 
         public Guid EmployeeId { get; set; }
         public Employee Employee { get; set; }

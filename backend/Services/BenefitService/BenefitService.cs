@@ -42,7 +42,7 @@ namespace UDV_Benefits.Services.BenefitService
             return benefit;
         }
 
-        public async Task<Result> ApplyForBenefitAsync(Guid employeeId, Guid benefitId)
+        public async Task<Result> ApplyForBenefitAsync(Guid employeeId, Guid benefitId, DmsProgram? dmsProgram)
         {
             var benefitResult = await GetBenefitByIdWorkerAsync(benefitId);
             if (benefitResult.IsFailure)
@@ -85,9 +85,12 @@ namespace UDV_Benefits.Services.BenefitService
             {
                 AppliedWhen = DateOnly.FromDateTime(DateTime.Today),
                 StatusChangedWhen = DateOnly.FromDateTime(DateTime.Today),
-                Status = RequestStatus.Approved, //TODO: поменять на PendingReview
+                Status = dmsProgram == null 
+                    ? RequestStatus.Approved 
+                    : RequestStatus.PendingReview,
                 Benefit = benefit,
-                Employee = employee
+                Employee = employee,
+                DmsProgram = dmsProgram
             };
 
             var benefitRequestResult = await _benefitRequestService.AddBenefitRequestAsync(benefitRequest);
@@ -122,6 +125,7 @@ namespace UDV_Benefits.Services.BenefitService
         public async Task<ValueResult<Benefit>> GetBenefitByIdWorkerAsync(Guid id)
         {
             var benefitResult = await _dbContext.Benefits
+                .Include(b => b.Category)
                 .FirstOrDefaultAsync(b => b.Id == id);
             if (benefitResult == null)
             {
