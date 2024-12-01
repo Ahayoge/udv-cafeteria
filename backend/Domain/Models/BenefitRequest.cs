@@ -9,6 +9,7 @@ namespace UDV_Benefits.Domain.Models
         //TODO: анкета
         public RequestStatus Status { get; set; }
         public DateOnly StatusChangedWhen { get; set; }
+        public string? RejectionReason { get; set; }
 
         public Guid BenefitId {  get; set; }
         public Benefit Benefit { get; set; }

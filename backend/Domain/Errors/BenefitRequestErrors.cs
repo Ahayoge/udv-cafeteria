@@ -14,5 +14,8 @@
         public static Error BenefitRequestNoAccessOnboarding => new Error(
             "BenefitRequest.NoAccess",
             "Не пройден адаптационный период");
+        public static Error BenefitRequestNotFoundById => new Error(
+            "BenefitRequest.NotFound",
+            "Заявка на льготу с таким id не найдена");
     }
 }
