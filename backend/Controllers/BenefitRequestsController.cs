@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using UDV_Benefits.Domain.DTO.BenefitRequest.Admin.PendingReviewById;
 using UDV_Benefits.Domain.DTO.BenefitRequest.Admin.RejectById;
 using UDV_Benefits.Domain.DTO.BenefitRequest.Worker.AllBenefitRequests;
+using UDV_Benefits.Domain.DTO.BenefitRequest.Worker.BenefitRequestById;
 using UDV_Benefits.Domain.DTO.EmployeeBenefit.ActiveById;
 using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 using UDV_Benefits.Domain.Mapper.BenefitRequestMapper;
 using UDV_Benefits.Domain.Mapper.BenefitRequestMapper.Admin;
+using UDV_Benefits.Domain.Mapper.BenefitRequestMapper.Worker;
 using UDV_Benefits.Utilities;
 
 namespace UDV_Benefits.Controllers
@@ -34,6 +36,17 @@ namespace UDV_Benefits.Controllers
             return Ok(benefitRequestsDto);
         }
 
+        [HttpGet("my/{benefitRequestId:guid}")]
+        [Authorize(Policy = Policy.Worker)]
+        public async Task<IActionResult> GetMyBenefitRequest(Guid benefitRequestId)
+        {
+            var benefitRequestResult = await _benefitRequestService.GetBenefitRequestById(benefitRequestId);
+            if (benefitRequestResult.IsFailure)
+                return NotFound(new { error = benefitRequestResult.Error!.Description });
+            var benefitRequestDto = benefitRequestResult.Value.ToDto<GetBenefitRequestByIdResponse>();
+            return Ok(benefitRequestDto);
+        }
+
         [HttpGet("pendingReview")]
         [Authorize(Policy = Policy.Admin)]
         public async Task<IActionResult> GetAllPendingReviewBenefitRequests()
@@ -54,7 +67,7 @@ namespace UDV_Benefits.Controllers
             return Ok(benefitRequestDto);
         }
 
-        [HttpGet("{benefitRequestId:guid}/reject")]
+        [HttpPost("{benefitRequestId:guid}/reject")]
         [Authorize(Policy = Policy.Admin)]
         public async Task<IActionResult> Reject(Guid benefitRequestId, RejectByIdRequest rejectRequest)
         {
@@ -65,7 +78,7 @@ namespace UDV_Benefits.Controllers
             return Ok();
         }
 
-        [HttpGet("{benefitRequestId:guid}/approve")]
+        [HttpPost("{benefitRequestId:guid}/approve")]
         [Authorize(Policy = Policy.Admin)]
         public async Task<IActionResult> Approve(Guid benefitRequestId)
         {

@@ -83,6 +83,17 @@ namespace UDV_Benefits.Services.BenefitRequestService
             return benefitRequests;
         }
 
+        public async Task<ValueResult<BenefitRequest>> GetBenefitRequestById(Guid benefitRequestId)
+        {
+            var benefitRequest = await _dbContext.BenefitRequests
+                .Include(br => br.Benefit)
+                .ThenInclude(b => b.Category)
+                .FirstOrDefaultAsync(br => br.Id == benefitRequestId);
+            if (benefitRequest == null)
+                return BenefitRequestErrors.BenefitRequestNotFoundById;
+            return benefitRequest;
+        }
+
         public async Task<List<BenefitRequest>> GetBenefitRequestsByEmployeeIdAsync(Guid employeeId)
         {
             var benefitRequests = await _dbContext.BenefitRequests
