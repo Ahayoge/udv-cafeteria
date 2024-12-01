@@ -72,6 +72,17 @@ namespace UDV_Benefits.Services.BenefitRequestService
             return Result.Success();
         }
 
+        public async Task<List<BenefitRequest>> GetAllPendingReviewBenefitRequestsAsync()
+        {
+            var benefitRequests = await _dbContext.BenefitRequests
+                .Include(br => br.Benefit)
+                .ThenInclude(b => b.Category)
+                .Include(br => br.Employee)
+                .Where(br => br.Status == RequestStatus.PendingReview)
+                .ToListAsync();
+            return benefitRequests;
+        }
+
         public async Task<List<BenefitRequest>> GetBenefitRequestsByEmployeeIdAsync(Guid employeeId)
         {
             var benefitRequests = await _dbContext.BenefitRequests

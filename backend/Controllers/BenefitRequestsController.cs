@@ -5,6 +5,7 @@ using UDV_Benefits.Domain.DTO.BenefitRequest.Admin.RejectById;
 using UDV_Benefits.Domain.DTO.BenefitRequest.Worker.AllBenefitRequests;
 using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 using UDV_Benefits.Domain.Mapper.BenefitRequestMapper;
+using UDV_Benefits.Domain.Mapper.BenefitRequestMapper.Admin;
 using UDV_Benefits.Utilities;
 
 namespace UDV_Benefits.Controllers
@@ -29,6 +30,15 @@ namespace UDV_Benefits.Controllers
             var benefitRequestsDto = benefitRequests
                 .Select(br => br.ToDto<BenefitRequestDto>());
             return Ok(benefitRequestsDto);
+        }
+
+        [HttpGet("pendingReview")]
+        [Authorize(Policy = Policy.Admin)]
+        public async Task<IActionResult> GetAllPendingReviewBenefitRequests()
+        {
+            var benefitRequests = await _benefitRequestService.GetAllPendingReviewBenefitRequestsAsync();
+            var benefitRequestDto = benefitRequests.ToDto();
+            return Ok(benefitRequestDto);
         }
 
         [HttpGet("{benefitRequestId:guid}/reject")]

@@ -9,5 +9,6 @@ namespace UDV_Benefits.Domain.Interfaces.BenefitRequestService
         public Task<List<BenefitRequest>> GetBenefitRequestsByEmployeeIdAsync(Guid employeeId);
         public Task<Result> RejectBenefitRequestByIdAsync(Guid benefitRequestId, string reason);
         public Task<Result> ApproveBenefitRequestByIdAsync(Guid benefitRequestId);
+        public Task<List<BenefitRequest>> GetAllPendingReviewBenefitRequestsAsync();
     }
 }
