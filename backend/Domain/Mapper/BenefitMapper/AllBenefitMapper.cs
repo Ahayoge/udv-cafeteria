@@ -11,6 +11,7 @@ namespace UDV_Benefits.Domain.Mapper.BenefitMapper
             return new BenefitDto
             {
                 Id = benefit.Id,
+                Category = benefit.Category.Name,
                 Name = benefit.Name,
                 Description = benefit.Description,
                 Conditions = new BenefitDto.ConditionsDto

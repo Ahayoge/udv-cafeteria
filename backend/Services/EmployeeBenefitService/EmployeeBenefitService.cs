@@ -27,6 +27,7 @@ namespace UDV_Benefits.Services.EmployeeBenefitService
         {
             var result = await _dbContext.EmployeeBenefits
                 .Include(eb => eb.Benefit)
+                .ThenInclude(b => b.Category)
                 .Where(eb => eb.Status == EmployeeBenefitStatus.Active)
                 .FirstOrDefaultAsync(eb => eb.Id == employeeBenefitId);
             if (result == null)
@@ -38,6 +39,7 @@ namespace UDV_Benefits.Services.EmployeeBenefitService
         {
             var result = await _dbContext.EmployeeBenefits
                 .Include(eb => eb.Benefit)
+                .ThenInclude(b => b.Category)
                 .Where(eb => 
                 eb.EmployeeId == employeeId
                 && eb.Status == EmployeeBenefitStatus.Active)

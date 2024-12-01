@@ -12,6 +12,7 @@ namespace UDV_Benefits.Domain.Mapper.EmployeeBenefitMapper
             return new GetActiveEmployeeBenefitResponse
             {
                 Id = employeeBenefit.Id,
+                Category = benefit.Category.Name,
                 Name = benefit.Name,
                 Description = benefit.Description,
                 DeactivatedWhen = employeeBenefit.DeactivatedWhen,

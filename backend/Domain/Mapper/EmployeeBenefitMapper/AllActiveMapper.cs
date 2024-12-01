@@ -11,6 +11,7 @@ namespace UDV_Benefits.Domain.Mapper.EmployeeBenefitMapper
                 new EmployeeBenefitDto
                 {
                     Id = eb.Id,
+                    Category = eb.Benefit.Category.Name,
                     Name = eb.Benefit.Name,
                     DeactivatedWhen = eb.DeactivatedWhen
                 });

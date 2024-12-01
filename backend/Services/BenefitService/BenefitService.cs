@@ -118,6 +118,7 @@ namespace UDV_Benefits.Services.BenefitService
         public async Task<List<Benefit>> GetAllBenefitsAsync()
         {
             var benefits = await _dbContext.Benefits
+                .Include(b => b.Category)
                 .ToListAsync();
             return benefits;
         }

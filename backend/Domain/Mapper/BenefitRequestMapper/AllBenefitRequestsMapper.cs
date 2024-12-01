@@ -11,6 +11,7 @@ namespace UDV_Benefits.Domain.Mapper.BenefitRequestMapper
             {
                 //TODO: картинка
                 Id = benefitRequest.Id,
+                Category = benefitRequest.Benefit.Category.Name,
                 Name = benefitRequest.Benefit.Name,
                 Status = benefitRequest.Status.ToString(),
                 StatusChangedWhen = benefitRequest.StatusChangedWhen

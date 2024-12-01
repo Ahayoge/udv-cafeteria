@@ -51,6 +51,7 @@ namespace UDV_Benefits.Controllers
 
             var benefit = request.FromDto();
             benefit.Category = categoryResult.Value;
+            benefit.FormRequired = categoryResult.Value.Name == "ДМС";
 
             var benefitResult = await _benefitService.AddBenefitAsync(benefit);
             if (benefitResult.IsFailure)

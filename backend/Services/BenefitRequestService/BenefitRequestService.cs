@@ -76,6 +76,7 @@ namespace UDV_Benefits.Services.BenefitRequestService
         {
             var benefitRequests = await _dbContext.BenefitRequests
                 .Include(br => br.Benefit)
+                .ThenInclude(b => b.Category)
                 .Where(br => br.EmployeeId == employeeId)
                 .ToListAsync();
             return benefitRequests;
