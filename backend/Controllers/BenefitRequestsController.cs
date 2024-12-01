@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UDV_Benefits.Domain.DTO.BenefitRequest.Admin.PendingReviewById;
 using UDV_Benefits.Domain.DTO.BenefitRequest.Admin.RejectById;
 using UDV_Benefits.Domain.DTO.BenefitRequest.Worker.AllBenefitRequests;
+using UDV_Benefits.Domain.DTO.EmployeeBenefit.ActiveById;
 using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 using UDV_Benefits.Domain.Mapper.BenefitRequestMapper;
 using UDV_Benefits.Domain.Mapper.BenefitRequestMapper.Admin;
@@ -38,6 +40,17 @@ namespace UDV_Benefits.Controllers
         {
             var benefitRequests = await _benefitRequestService.GetAllPendingReviewBenefitRequestsAsync();
             var benefitRequestDto = benefitRequests.ToDto();
+            return Ok(benefitRequestDto);
+        }
+
+        [HttpGet("pendingReview/{benefitRequestId:guid}")]
+        [Authorize(Policy = Policy.Admin)]
+        public async Task<IActionResult> GetPendingReviewDmsBenefitRequestById(Guid benefitRequestId)
+        {
+            var benefitRequestResult = await _benefitRequestService.GetPendingReviewDmsBenefitRequestByIdAsync(benefitRequestId);
+            if (benefitRequestResult.IsFailure)
+                return NotFound(new {error = benefitRequestResult.Error!.Description});
+            var benefitRequestDto = benefitRequestResult.Value.ToDto<GetDmsBenefitRequestByIdResponse>();
             return Ok(benefitRequestDto);
         }
 
