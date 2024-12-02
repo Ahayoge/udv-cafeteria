@@ -7,6 +7,7 @@ using UDV_Benefits.Domain.Interfaces.CategoryService;
 using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.RegisterService;
+using UDV_Benefits.Domain.Interfaces.StatisticsService;
 using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Extensions;
 using UDV_Benefits.Infrastructure;
@@ -18,6 +19,7 @@ using UDV_Benefits.Services.CategoryService;
 using UDV_Benefits.Services.EmployeeBenefitService;
 using UDV_Benefits.Services.EmployeeService;
 using UDV_Benefits.Services.RegisterService;
+using UDV_Benefits.Services.StatisticsService;
 using UDV_Benefits.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +46,7 @@ builder.Services.AddScoped<IBenefitService, BenefitService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBenefitRequestService, BenefitRequestService>();
 builder.Services.AddScoped<IEmployeeBenefitService, EmployeeBenefitService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 #if RELEASE
 builder.Services.AddDbContext<AppDbContext>(

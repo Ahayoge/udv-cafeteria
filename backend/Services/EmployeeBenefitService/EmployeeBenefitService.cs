@@ -4,6 +4,7 @@ using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Infrastructure.Data;
+using System.Linq.Expressions;
 
 namespace UDV_Benefits.Services.EmployeeBenefitService
 {
@@ -55,6 +56,29 @@ namespace UDV_Benefits.Services.EmployeeBenefitService
                 && eb.Status == EmployeeBenefitStatus.Active)
                 .ToListAsync();
             return result;
+        }
+
+        public async Task<int> GetCountOfEmployeeBenefitByBenefitIdAsync(Guid benefitId, StatisticsPeriod period, int periodNumber, int year)
+        {
+            Expression<Func<EmployeeBenefit, bool>> periodFilter;
+            if (period == StatisticsPeriod.Month)
+            {
+                periodFilter = eb => eb.ActivatedWhen.Month == periodNumber && eb.ActivatedWhen.Year == year;
+            }
+            else if (period == StatisticsPeriod.Quarter)
+            {
+                periodFilter = eb => (eb.ActivatedWhen.Month - 1) / 3 + 1 == periodNumber 
+                && eb.ActivatedWhen.Year == year;
+            }
+            else
+            {
+                periodFilter = eb => eb.ActivatedWhen.Year == year;
+            }
+            var employeeBenefitsCount = await _dbContext.EmployeeBenefits
+                .Where(eb => eb.BenefitId == benefitId)
+                .Where(periodFilter)
+                .CountAsync();
+            return employeeBenefitsCount;
         }
     }
 }

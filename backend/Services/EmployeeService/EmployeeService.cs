@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Domain.Errors;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Models;
@@ -32,6 +34,16 @@ namespace UDV_Benefits.Services.EmployeeService
             if (employee == null)
                 return EmployeeErrors.EmployeeNotFoundById;
             return employee;
+        }
+
+        public Task<List<Employee>> GetEmployeesWithActiveBenefitId(Guid benefitId)
+        {
+            var employees = _dbContext.Employees
+                .Where(e => e.EmployeeBenefits.Any(eb =>
+                eb.BenefitId == benefitId &&
+                eb.Status == EmployeeBenefitStatus.Active))
+                .ToListAsync();
+            return employees;
         }
     }
 }

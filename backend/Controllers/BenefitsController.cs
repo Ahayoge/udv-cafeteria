@@ -121,5 +121,14 @@ namespace UDV_Benefits.Controllers
             }
             return Ok();
         }
+
+        [HttpGet("statistics")]
+        [Authorize(Policy = Policy.Admin)]
+        public async Task<IActionResult> GetBenefitsForStatistics()
+        {
+            var benefits = await _benefitService.GetAllBenefitsAsync();
+            var benefitsDto = benefits.ToDto();
+            return Ok(benefitsDto);
+        }
     }
 }
