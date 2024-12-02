@@ -6,8 +6,10 @@ using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
 using UDV_Benefits.Domain.DTO.Benefit.Worker.GetBenefitById;
 using UDV_Benefits.Domain.Enums;
 using UDV_Benefits.Domain.Errors;
+using UDV_Benefits.Domain.Interfaces.BenefitRequestService;
 using UDV_Benefits.Domain.Interfaces.BenefitService;
 using UDV_Benefits.Domain.Interfaces.CategoryService;
+using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Domain.Mapper.BenefitMapper;
@@ -22,12 +24,18 @@ namespace UDV_Benefits.Controllers
         private readonly IBenefitService _benefitService;
         private readonly ICategoryService _categoryService;
         private readonly IUserService _userService;
+        private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeBenefitService _employeBenefitService;
+        private readonly IBenefitRequestService _benefitRequestService;
 
-        public BenefitsController(IBenefitService benefitService, ICategoryService categoryService, IUserService userService)
+        public BenefitsController(IBenefitService benefitService, ICategoryService categoryService, IUserService userService, IEmployeeService employeeService, IEmployeeBenefitService employeBenefitService, IBenefitRequestService benefitRequestService)
         {
             _benefitService = benefitService;
             _categoryService = categoryService;
             _userService = userService;
+            _employeeService = employeeService;
+            _employeBenefitService = employeBenefitService;
+            _benefitRequestService = benefitRequestService;
         }
 
         [HttpGet]
@@ -73,7 +81,28 @@ namespace UDV_Benefits.Controllers
                 return NotFound(new { error = benefitResult.Error!.Description });
             }
 
-            var benefitDto = benefitResult.Value.ToDto<GetBenefitByIdResponse>();
+            var benefit = benefitResult.Value;
+            var benefitDto = benefit.ToDto<GetBenefitByIdResponse>();
+
+            var employeeId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "employeeId")?.Value);
+            var employeeResult = await _employeeService.GetEmployeeById(employeeId);
+            var employee = employeeResult.Value;
+            benefitDto.ConditionsAreMet = new GetBenefitByIdResponse.ConditionsAreMetDto
+            {
+                ExperienceYearsRequired = benefit.ExperienceYearsRequired != null 
+                ? (DateOnly.FromDateTime(DateTime.Today).Year
+                    - employee.StartedWorkWhen.Year) >= benefit.ExperienceYearsRequired
+                : null,
+                UcoinPrice = benefit.UcoinPrice != null
+                ? employee.Ucoins >= benefit.UcoinPrice
+                : null,
+                OnboardingRequired = benefit.OnboardingRequired
+                ? employee.IsOnboarded
+                : null
+            };
+            benefitDto.BenefitRequestExists = await _benefitRequestService.PendingReviewBenefitRequestExists(benefit, employee);
+            benefitDto.ActiveEmployeeBenefitExists = await _employeBenefitService.ActiveEmployeeBenefitExists(employee, benefit);
+
             return Ok(benefitDto);
         }
 

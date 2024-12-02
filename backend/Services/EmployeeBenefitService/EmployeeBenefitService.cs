@@ -16,6 +16,16 @@ namespace UDV_Benefits.Services.EmployeeBenefitService
             _dbContext = dbContext;
         }
 
+        public async Task<bool> ActiveEmployeeBenefitExists(Employee employee, Benefit benefit)
+        {
+            var activatedEmployeeBenefit = await _dbContext.EmployeeBenefits
+               .FirstOrDefaultAsync(eb =>
+               eb.BenefitId == benefit.Id
+               && eb.EmployeeId == employee.Id
+               && eb.Status == EmployeeBenefitStatus.Active);
+            return activatedEmployeeBenefit != null;
+        }
+
         public async Task<Result> AddEmployeeBenefitAsync(EmployeeBenefit employeeBenefit)
         {
             await _dbContext.EmployeeBenefits.AddAsync(employeeBenefit);

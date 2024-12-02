@@ -116,6 +116,16 @@ namespace UDV_Benefits.Services.BenefitRequestService
             return benefitRequest;
         }
 
+        public async Task<bool> PendingReviewBenefitRequestExists(Benefit benefit, Employee employee)
+        {
+            var existingBenefitRequest = await _dbContext.BenefitRequests
+                .FirstOrDefaultAsync(br =>
+                br.BenefitId == benefit.Id
+                && br.EmployeeId == employee.Id
+                && br.Status == RequestStatus.PendingReview);
+            return existingBenefitRequest != null;
+        }
+
         public async Task<Result> RejectBenefitRequestByIdAsync(Guid benefitRequestId, string reason)
         {
             var benefitRequest = await _dbContext.BenefitRequests

@@ -9,6 +9,14 @@
             public bool FormRequired { get; set; }
             public bool OnboardingRequired { get; set; }
         }
+
+        public class ConditionsAreMetDto 
+        {
+            public bool? ExperienceYearsRequired { get; set; }
+            public bool? UcoinPrice { get; set; }
+            public bool? OnboardingRequired { get; set; }
+        }
+
         //TODO: фото
         public Guid Id { get; set; }
         public string Category { get; set; }
@@ -17,5 +25,8 @@
         public int ValidityPeriodDays { get; set; }
         public ConditionsDto Conditions { get; set; }
         public string AdditionalInfo { get; set; }
+        public ConditionsAreMetDto ConditionsAreMet { get; set; }
+        public bool BenefitRequestExists { get; set; }
+        public bool ActiveEmployeeBenefitExists { get; set; }
     }
 }

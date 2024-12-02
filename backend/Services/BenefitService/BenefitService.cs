@@ -75,7 +75,7 @@ namespace UDV_Benefits.Services.BenefitService
                 {
                     return BenefitRequestErrors.BenefitRequestNoAccessUcoins;
                 }
-
+                //TODO: если с модерацией, то убрать списание юкоинов
                 employee.Ucoins = benefit.UcoinPrice != null
                 ? employee.Ucoins - (int)benefit.UcoinPrice
                 : employee.Ucoins;
@@ -85,7 +85,7 @@ namespace UDV_Benefits.Services.BenefitService
             {
                 AppliedWhen = DateOnly.FromDateTime(DateTime.Today),
                 StatusChangedWhen = DateOnly.FromDateTime(DateTime.Today),
-                Status = dmsProgram == null 
+                Status = dmsProgram == null //TODO: или если нужна модерация - добавить условие
                     ? RequestStatus.Approved 
                     : RequestStatus.PendingReview,
                 Benefit = benefit,

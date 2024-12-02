@@ -12,5 +12,6 @@ namespace UDV_Benefits.Domain.Interfaces.BenefitRequestService
         public Task<List<BenefitRequest>> GetAllPendingReviewBenefitRequestsAsync();
         public Task<ValueResult<BenefitRequest>> GetPendingReviewDmsBenefitRequestByIdAsync(Guid benefitRequestId);
         public Task<ValueResult<BenefitRequest>> GetBenefitRequestById(Guid benefitRequestId);
+        public Task<bool> PendingReviewBenefitRequestExists(Benefit benefit, Employee employee);
     }
 }
