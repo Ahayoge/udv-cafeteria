@@ -13,12 +13,12 @@ namespace UDV_Benefits.Domain.Mapper.BenefitMapper
                 Id = benefit.Id,
                 Category = benefit.Category.Name,
                 Name = benefit.Name,
-                Description = benefit.Description,
                 Conditions = new BenefitDto.ConditionsDto
                 {
                     ExperienceYearsRequired = benefit.ExperienceYearsRequired,
                     UcoinPrice = benefit.UcoinPrice,
-                    FormRequired = benefit.FormRequired
+                    FormRequired = benefit.FormRequired,
+                    OnboardingRequired = benefit.OnboardingRequired
                 }
             };
         }

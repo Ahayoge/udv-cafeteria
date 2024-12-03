@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using UDV_Benefits.Domain.DTO.Benefit;
 using UDV_Benefits.Domain.DTO.Benefit.AddBenefit;
 using UDV_Benefits.Domain.DTO.Benefit.AllBenefits;
@@ -13,6 +14,7 @@ using UDV_Benefits.Domain.Interfaces.EmployeeBenefitService;
 using UDV_Benefits.Domain.Interfaces.EmployeeService;
 using UDV_Benefits.Domain.Interfaces.UserService;
 using UDV_Benefits.Domain.Mapper.BenefitMapper;
+using UDV_Benefits.Domain.Models;
 using UDV_Benefits.Utilities;
 
 namespace UDV_Benefits.Controllers
@@ -40,11 +42,20 @@ namespace UDV_Benefits.Controllers
 
         [HttpGet]
         [Authorize(Policy = Policy.Authenticated)]
-        public async Task<IActionResult> GetAllBenefits()
+        public async Task<IActionResult> GetAllBenefits([FromQuery] string? category)
         {
-            var benefits = await _benefitService.GetAllBenefitsAsync();
-            var response = benefits.Select(b => b.ToDto<BenefitDto>());
-            return Ok(response);
+            if (!string.IsNullOrEmpty(category))
+            {
+                var filteredBenefits = await _benefitService.GetFilteredByCategoryBenefitsAsync(category);
+                var filteredResponse = filteredBenefits.Select(b => b.ToDto<BenefitDto>());
+                return Ok(filteredResponse);
+            }
+            else
+            {
+                var benefits = await _benefitService.GetAllBenefitsAsync();
+                var response = benefits.Select(b => b.ToDto<BenefitDto>());
+                return Ok(response);
+            }
         }
 
         [HttpPost]

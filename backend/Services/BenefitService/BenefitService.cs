@@ -134,5 +134,14 @@ namespace UDV_Benefits.Services.BenefitService
             }
             return benefitResult;
         }
+
+        public async Task<List<Benefit>> GetFilteredByCategoryBenefitsAsync(string categoryName)
+        {
+            var benefits = await _dbContext.Benefits
+                    .Include(b => b.Category)
+                    .Where(b => b.Category.Name == categoryName)
+                    .ToListAsync();
+            return benefits;
+        }
     }
 }
